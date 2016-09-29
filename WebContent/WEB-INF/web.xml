@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
+  <display-name>pythip</display-name>
+  
+  <!--default welcome -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+  
+  <!-- springmvc -->
+  <servlet>
+  	<servlet-name>springmvc</servlet-name>
+  	<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  	<init-param>
+  		<param-name>contextConfigLocation</param-name>
+  		<param-value>classpath:springmvc_core.xml</param-value>
+  	</init-param>
+  	<load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+  	<servlet-name>springmvc</servlet-name>
+  	<url-pattern>*.html</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>springmvc</servlet-name>
+  	<url-pattern>/res/*</url-pattern>
+  </servlet-mapping>
+  
+  <!-- spring 配置文件-->
+  <context-param>
+  	<param-name>contextConfigLocation</param-name>
+  	<param-value>classpath:spring_mybatis_core.xml,classpath:spring_core.xml,classpath:spring_security.xml</param-value>
+  </context-param>
+  	
+  	<!-- spring security -->
+  	<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
+  <!-- character -->
+  <filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+    
+    <!-- Log4j -->
+	<context-param>   
+ 		<param-name>log4jConfigLocation</param-name>   
+ 		<param-value>classpath:log4j.properties</param-value>  
+	</context-param>  
+	<listener>   
+ 		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
+	</listener>
+	
+  <!-- spring Listener -->
+  <listener>
+  	<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  
+  <!-- 配置springsecurity session监听，主要实现session固化攻击防御和session并发控制 -->
+	<listener>
+		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
+	</listener>
+	
+	<!-- jsp标签 -->
+    <jsp-config>
+    <taglib>
+      <taglib-uri>/jstl1.1/core.tld</taglib-uri>
+      <taglib-location>/WEB-INF/tld/c.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/jstl1.1/fmt.tld</taglib-uri>
+      <taglib-location>/WEB-INF/tld/fmt.tld</taglib-location>
+    </taglib>
+    <taglib>
+      <taglib-uri>/jstl1.1/fn.tld</taglib-uri>
+      <taglib-location>/WEB-INF/tld/fn.tld</taglib-location>
+    </taglib>
+  </jsp-config>
+  	
+  	<!-- 配置错误页面 -->
+  	<error-page>
+ 		<error-code>404</error-code>
+ 		<location>/WEB-INF/view/error/404.jsp</location>
+	 </error-page>
+	<error-page>
+ 		<error-code>401</error-code>
+ 		<location>/WEB-INF/view/error/401.jsp</location>
+ 	</error-page>
+	 <error-page>
+ 		<error-code>500</error-code>
+ 		<location>/WEB-INF/view/error/500.jsp</location>
+ 	</error-page>
+  	<!-- session失效时间 -->
+    <session-config>
+    <session-timeout>30</session-timeout>
+  </session-config>  
+</web-app>

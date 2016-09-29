@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/mvc 
+        http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+        http://www.springframework.org/schema/beans 
+        http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+        http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+	<!-- 配置freemarker视图 -->
+	<bean id="freeMarkerViewResolver" class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+		<property name="order" value="1" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.freemarker.FreeMarkerView" />
+		<property name="contentType" value="text/html; charset=utf-8" />
+		<property name="cache" value="true" />
+		<property name="prefix" value="" />
+		<property name="suffix" value=".ftl" />
+		<property name="exposeRequestAttributes" value="true" />
+  		<property name="exposeSessionAttributes" value="true" />
+	 	<property name="exposeSpringMacroHelpers" value="true" />
+	 	<property name="requestContextAttribute" value="rc" />
+	 	<property name="cacheUnresolved" value="false" />
+	</bean>
+	
+	<bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">  
+	    <property name="templateLoaderPaths">
+	            <list>
+	           		 <value>/WEB-INF/freemarker/</value>   <!--html文件的存放位置-->
+	            </list>
+	    </property> 
+	    <property name="freemarkerSettings">  
+	        <props>  
+	            <prop key="template_update_delay">0</prop>  
+	            <prop key="default_encoding">UTF-8</prop>  
+	            <prop key="number_format">0.##########</prop>  
+	            <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>  
+	            <prop key="classic_compatible">true</prop>  
+	            <prop key="template_exception_handler">ignore</prop> 
+	            <prop key="url_escaping_charset">UTF-8</prop>
+	            <prop key="date_format">yyyy-MM-dd</prop>
+	            <prop key="time_format">HH:mm:ss</prop>
+	            <prop key="boolean_format">true,false</prop> 
+	            <prop key="classic_compatible">true</prop>
+	            <prop key="whitespace_stripping">true</prop> 
+	            <prop key="tag_syntax">auto_detect</prop>
+	            <prop key="auto_import">"core/core.ftl" as core</prop>
+	        </props>  
+	    </property>  
+	</bean>  
+	
+	
+	<!-- 配置jsp视图 -->
+	<bean id="jspViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="order" value="2" />
+		<property name="viewClass" value="org.springframework.web.servlet.view.JstlView" />
+		<property name="prefix" value="/WEB-INF/jsp/" />
+		<property name="suffix" value=".jsp" />
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="cache" value="true" />
+	</bean>
+	
+	<!-- 配置velocity视图  -->
+	<bean id="velocityViewResolver" class="org.springframework.web.servlet.view.velocity.VelocityViewResolver">  
+        <!-- 每个页面都引用 -->  
+        <property name="exposeRequestAttributes" value="true" />  
+        <!-- 页面类型 -->  
+        <property name="contentType" value="text/html;charset=UTF-8" />  
+        <!-- 前缀 -->  
+        <property name="prefix" value="" />  
+        <!-- 后缀 -->  
+        <property name="suffix" value=".vm" />  
+        <!-- 每个页面都引用 -->  
+        <!--  <property name="layoutUrl" value="layout.html" />-->  
+        <!-- 当前项目域名(IP)加端口号,html页面引用${rc.contextPath}-->  
+        <property name="requestContextAttribute" value="rc" />  
+        <!--第一个匹配的是freemarker的视图解析器，如果匹配不成功，则自动选择order=1的其他解析器-->  
+        <property name="order" value="3" />  
+    </bean>  
+    <bean id="velocityConfigurer" class="org.springframework.web.servlet.view.velocity.VelocityConfigurer">  
+        <property name="resourceLoaderPath">  
+            <value>/WEB-INF/velocity</value>  
+        </property>  
+        <property name="velocityProperties">  
+            <props>  
+                <prop key="input.encoding">UTF-8</prop>  
+                <prop key="output.encoding">UTF-8</prop>  
+                <prop key="contentType">text/html;charset=UTF-8</prop>  
+            </props>  
+        </property>  
+    </bean> 
+	
+    <!-- 文件上传配置注意:这里申明的id必须为multipartResolver -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+       <property name="maxUploadSize" value="500000"/>
+    </bean>
+    
+    <!-- 简单的异常处理 -->
+    <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <!-- 映射目录为/WEB-INF/jsp/error/upload_error.jsp -->
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">/error/upload_error</prop>
+            </props>
+        </property>
+    </bean>
+</beans>

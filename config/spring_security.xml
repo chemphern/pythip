@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+          http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+          http://www.springframework.org/schema/security
+          http://www.springframework.org/schema/security/spring-security-3.2.xsd
+          http://www.springframework.org/schema/context
+          http://www.springframework.org/schema/context/spring-context-2.5.xsd
+          ">
+    <!-- 加载所有的权限和角色 自定义类需继承FilterInvocationSecurityMetadataSource -->
+    <bean id="securityMetadataSource" class="com.pythip.common.service.security.SecurityFilterInvocationMetadataSource"/>
+    <!-- 自定义验证用户数据从数据库中取 自定义用户Service需继承UserDetailsService-->
+    <bean id="securityUserDetailsServiceImpl" class="com.pythip.common.service.security.SecurityUserDetailsService"/>
+    
+    <!-- 准入决定规则 -->
+    <bean id="securityAccessDecisionManager" class="com.pythip.common.security.access.SecurityAccessDecisionManager"/>
+    
+    <!-- 给定md5加密解释器 自定义类需继承BasePasswordEncoder-->
+    <bean id="md5Encoder" class="com.pythip.common.security.encoder.MD5Encoder"/>
+    
+    <!-- 自定义security请求的拦截器 -->
+    <bean id="securityFilterInterceptor" class="com.pythip.common.security.interceptor.SecurityFilterInterceptor">
+    	<property name="accessDecisionManager" ref="securityAccessDecisionManager" />
+		<property name="authenticationManager" ref="authenticationManager"></property>
+    </bean>
+    
+    	<security:http auto-config='true'>
+		<!-- 不要过滤图片等静态资源，其中**代表可以跨越目录，*不可以跨越目录。 access="IS_AUTHENTICATED_ANONYMOUSLY":表示匿名访问 
+			注：可以技持正则表达式 -->
+		<!-- 不拦截静态资源 -->
+		<security:intercept-url pattern="/res/**"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<!-- 不拦截登录页面 -->
+		<security:intercept-url pattern="**/login.html"
+			access="IS_AUTHENTICATED_ANONYMOUSLY" />
+
+		<!-- 自定义拦截器，在security拦截器之前执行，用于判断权限 -->
+		<security:custom-filter ref="securityFilterInterceptor"
+			before="FILTER_SECURITY_INTERCEPTOR" />
+
+		<!-- 配置登录页面 -->
+		<!-- login-page:默认指定的登录页面. authentication-failure-url:出错后跳转页面. default-target-url:成功登陆后跳转页面. 
+			login-processing-url:发送的登录请求 -->
+		<security:form-login default-target-url="/pymanager/index.html"
+			login-page="/pymanager/login.html" authentication-failure-url="/pymanager/failure.html"/>
+		<!-- 控制session 的并发数量 -->
+		<security:session-management
+			session-fixation-protection="migrateSession">
+			<security:concurrency-control
+				max-sessions="1" expired-url="/pymanager/login.html" />
+		</security:session-management>
+	</security:http>
+     <!-- 配置认证管理器 -->
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="securityUserDetailsServiceImpl">
+			<security:password-encoder ref="md5Encoder">
+				<!-- 添加盐值，增强系统的安全性 -->
+				<security:salt-source system-wide="chemphone" />
+			</security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+</beans>

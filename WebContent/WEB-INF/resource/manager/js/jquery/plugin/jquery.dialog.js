@@ -346,7 +346,7 @@
 		
 		open : function(){
 			var _define = this._define, $dialog = _define.$dialog , options = this.options, isMask = options.modal;	
-			isMask &&　$.mask.open('ued-dialog');
+			isMask &&$.mask.open('ued-dialog');
 			if(!options.fixed && options.position[1]=='center'){
 				//如果弹窗不是fiexd定位，且top为center时，打开前需要+scrollTop
 				_define.top += $(window).scrollTop();
@@ -357,9 +357,9 @@
 		
 		close : function(){
 			var  _define = this._define, $dialog = _define.$dialog, closeCallback = this.options.closeCallback, isMask = this.options.modal;	
-			isMask &&　$.mask.close('ued-dialog');
+			isMask &&$.mask.close('ued-dialog');
 			$dialog.hide();
-			closeCallback &&　closeCallback.call(this.element,this.element,$('#__mask',$('body')));
+			closeCallback &&closeCallback.call(this.element,this.element,$('#__mask',$('body')));
 		},
         _init : function() {
            // var self = this, options = this.options, $el = this.element;

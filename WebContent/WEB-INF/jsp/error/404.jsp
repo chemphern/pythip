@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>pythip后台管理系统</title>
+<title>人事管理系统管理系统</title>
 <link href="${mres}/css/style.css?r_key=${r_key}" rel="stylesheet" type="text/css" />
 <script src="${res }/ligerui/jquery/jquery1.11.1.js?r_key=${r_key}"></script>
 <script>

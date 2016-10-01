@@ -39,7 +39,7 @@ body{ font-family:'微软雅黑';background: #2074bb;}
 .login1 .login-btn .remember input[type="checkbox"]:checked ~ em,.login .login-btn .remember.checked em{ background:url(../../images/login/check-select.png) no-repeat left center;}
 .login1 .login-input p.yzm input{ background:url(../../images/login/login_yzm.png);}
 .yzm{position:relative;}
-.yzm cite{position:absolute; right:176px; font-size:16px; color:#fff;}
+.yzm img{position:absolute; right:176px;cursor:pointer}
 
 #ft{ position:absolute;left:0;right:0;bottom:40px; color:#10486b; text-align:center; z-index:2;}
 

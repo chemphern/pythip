@@ -28,7 +28,7 @@
 						<p class="yzm ue-clear">
 							<label>验证码</label>
 							<input type="text" name="val_code"/>
-							<cite>X394D</cite>
+							<img src="${ctx }/pymanager/login/getValidCode.html?_=${r_key}" style="position:absolute;right:176px;" id="yzm_code"/>
 						</p>
 					</div>
 					<div class="login-btn ue-clear">
@@ -104,6 +104,10 @@ $(function(){
 		}else{
 			$tip("账号或者密码错误！","请重新输入账号密码",{value:"确定"});
 		}
+	});
+	$("#yzm_code").click(function(){
+		var ts = $(this);
+		ts.attr("src",ts.attr("src").split("=")[0] + "=" + Math.random());
 	});
 });
 </script>

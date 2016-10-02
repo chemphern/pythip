@@ -77,6 +77,6 @@ public class MD5 {
 	 * 提供一个测试的主函数
 	 */
 	public static void main(String[] args) {
-		System.out.println("test:" + getMD5ofStr("123456chemphone"));
+		System.out.println("test:" + getMD5ofStr("123456$pythip"));
 	}
 }

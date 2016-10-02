@@ -12,7 +12,7 @@
 </head>
 <body>
 	<div id="container">
-		<form id="login_form">
+		<form id="login_form" action="${ctx }/pymanager/login/validation.html" target="${ctx }/pymanager/index.html">
 			<div id="bd">
 				<div class="login1">
 					<div class="login-top"><h1 class="logo"></h1></div>
@@ -85,24 +85,28 @@ $(function(){
 			$.ajax({
 				url:act,
 				type:"post",
+				data:$fm.serialize(),
 				dataType:"json",
 				success:function(data){
-					if(data.res == -1 || data.res == "-1"){
-						$tip(data.tip,"",{value:"确定"});
+					if(data.retCode){
+						var target = $fm.attr("target");
+						if(typeof target != "undefined" && target != ''){
+							window.location.href = target;
+						}
 					}else{
-						window.location.href = $fm.attr("target");
+						$tip(data.retMsg,"请重新输入",{value:"确定",click:function(){$("#yzm_code").click();}});
 					}
 				},
 				error:function(data){
-					if(typeof data != "undefined" && typeof data.res != "undefined"){
-						$tip(data.tip,"",{value:"确定"});
+					if(typeof data != "undefined" && typeof data.retCode != "undefined"){
+						$tip(data.retMsg,"",{value:"确定"});
 					}else{
-						$tip("账号或者密码错误！","请重新输入账号密码",{value:"确定"});
+						$tip("账号或者密码错误","请重新输入",{value:"确定",click:function(){$("#yzm_code").click();}});
 					}
 				}
 			});
 		}else{
-			$tip("账号或者密码错误！","请重新输入账号密码",{value:"确定"});
+			$tip("账号或者密码错误","请重新输入",{value:"确定",click:function(){$("#yzm_code").click();}});
 		}
 	});
 	$("#yzm_code").click(function(){

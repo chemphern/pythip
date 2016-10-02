@@ -59,7 +59,7 @@
 			user-service-ref="securityUserDetailsServiceImpl">
 			<security:password-encoder ref="md5Encoder">
 				<!-- 添加盐值，增强系统的安全性 -->
-				<security:salt-source system-wide="chemphone" />
+				<security:salt-source system-wide="$pythip" />
 			</security:password-encoder>
 		</security:authentication-provider>
 	</security:authentication-manager>

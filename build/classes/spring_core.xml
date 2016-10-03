@@ -49,6 +49,9 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
+			<mvc:exclude-mapping path="/pymanager/login.html"/>
+			<mvc:exclude-mapping path="/pymanager/login/**"/>
+			<mvc:exclude-mapping path="/res/**"/>
 			<bean class="com.pythip.manager.interceptor.MainInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

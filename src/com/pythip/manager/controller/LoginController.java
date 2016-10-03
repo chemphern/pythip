@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.pythip.common.constant.Constant;
+import com.pythip.common.util.CookieUtil;
 import com.pythip.common.util.LoginUtil;
 import com.pythip.common.util.MD5;
 import com.pythip.common.vo.ResponseEx;
@@ -36,7 +37,7 @@ public class LoginController {
 	/**登陆**/
 	@RequestMapping("validation")
 	@ResponseBody
-	public ResponseEx validation(String username,String pwd,String val_code,HttpSession session){
+	public ResponseEx validation(String username,String pwd,String val_code,String key,HttpSession session,HttpServletResponse response){
 		String inputError = null;
 		ResponseEx ex = new ResponseEx();
 		if(username ==null || "".equals(username)){
@@ -56,6 +57,13 @@ public class LoginController {
 				ex.setFail("用户名或者密码不正确");
 			}else{
 				session.setAttribute(Constant.SESSION_USER, user);
+				if (null!= key &&key.equals("1")){
+					try {
+						CookieUtil.addCookie(Constant.COOKIES_USER,user.getId(),response);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
 				ex.setSuccess("登陆成功！");
 			}
 		}

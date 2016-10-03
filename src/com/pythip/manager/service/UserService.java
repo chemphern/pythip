@@ -23,4 +23,9 @@ public class UserService extends BaseService{
 		return selectOne("getUserByNameAndPwd",param);
 	}
 
+	/**根据Id获取用户**/
+	public User getUserById(String id) {
+		return selectOne("getUserById",id);
+	}
+
 }

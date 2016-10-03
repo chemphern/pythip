@@ -34,7 +34,7 @@
 					<div class="login-btn ue-clear">
 						<a href="javascript:void(0);" class="btn" id="login_btn">登录</a>
 						<div class="remember ue-clear">
-							<input type="checkbox" id="remember" />
+							<input type="checkbox" id="remember" name="key" value="1"/>
 							<em></em>
 							<label for="remember">记住密码</label>
 						</div>
@@ -112,6 +112,11 @@ $(function(){
 	$("#yzm_code").click(function(){
 		var ts = $(this);
 		ts.attr("src",ts.attr("src").split("=")[0] + "=" + Math.random());
+	});
+	$("#login_form").keydown(function(e){
+		if(e.keyCode==13){
+			$("#login_btn").click();
+		}
 	});
 });
 </script>

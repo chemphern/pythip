@@ -40,6 +40,7 @@ public class LoginController {
 	public ResponseEx validation(String username,String pwd,String val_code,String key,HttpSession session,HttpServletResponse response){
 		String inputError = null;
 		ResponseEx ex = new ResponseEx();
+		/**后台校验**/
 		if(username ==null || "".equals(username)){
 			inputError = "用户名不能为空";
 		}else if(pwd == null || "".equals(pwd)){
@@ -57,12 +58,16 @@ public class LoginController {
 				ex.setFail("用户名或者密码不正确");
 			}else{
 				session.setAttribute(Constant.SESSION_USER, user);
-				if (null!= key &&key.equals("1")){
-					try {
-						CookieUtil.addCookie(Constant.COOKIES_USER,user.getId(),response);
-					} catch (Exception e) {
-						e.printStackTrace();
+				try {
+					//如果记住密码，则添加cookie标识
+					if (null!= key &&key.equals("1")){						
+							CookieUtil.addCookie(Constant.COOKIES_USER,user.getId(),response);						
+					//没有记住密码，则删除cookie标识
+					}else{
+						CookieUtil.removeCookie(Constant.COOKIES_USER, response);
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 				ex.setSuccess("登陆成功！");
 			}
